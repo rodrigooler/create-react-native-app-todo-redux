@@ -10,7 +10,7 @@ import {
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import { todoAdd } from '../action/todoActions';
+import { todoAdd, todoRemove } from '../action/todoActions';
 
 class Todo extends Component {
   state = {
@@ -22,9 +22,10 @@ class Todo extends Component {
     return this.setState({ todoValue: '' });
   };
 
+  todoRemove = index => this.props.actions.todoRemove(index);
+
   render() {
-    const { todoValue } = this.state;
-    console.log(todos);
+    const { todoValue, index } = this.state;
     const { todos } = this.props;
 
     return (
@@ -38,8 +39,8 @@ class Todo extends Component {
               style={styles.textInput}
               onChangeText={todoValue => this.setState({ todoValue })}
               value={todoValue}
-              placeholder="Add TODO"
             />
+
             <TouchableOpacity style={styles.button} onPress={this.todoAdd}>
               <Text style={styles.buttonText}>ADD</Text>
             </TouchableOpacity>
@@ -47,12 +48,20 @@ class Todo extends Component {
           <View style={styles.flatView}>
             <FlatList
               data={todos}
-              renderItem={({ item }, key) =>
-                <TouchableOpacity key={key} style={styles.flatList}>
-                  <Text>
-                    {item.todoValue}
-                  </Text>
-                </TouchableOpacity>}
+              renderItem={({ item, index }) => {
+                console.log(index);
+                return (
+                  <TouchableOpacity
+                    key={item.todoValue}
+                    onPress={() => this.todoRemove(index)}
+                    style={styles.flatList}
+                  >
+                    <Text>
+                      {`Value: ${item.todoValue}`}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              }}
             />
           </View>
         </View>
@@ -113,6 +122,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     todoAdd: todo => dispatch(todoAdd(todo)),
+    todoRemove: index => dispatch(todoRemove(index)),
   },
 });
 

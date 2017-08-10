@@ -9,7 +9,11 @@ const todo = (state = initialState, action) => {
   switch (action.type) {
     case 'TODO_ADD':
       return [action.todo, ...state];
-
+    case 'TODO_REMOVE':
+      return [
+        ...state.slice(0, action.index),
+        ...state.slice(action.index + 1),
+      ];
     default:
       return state;
   }
