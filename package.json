@@ -1,26 +1,38 @@
 {
   "name": "CreateReactNativeAppTodoRedux",
   "version": "0.1.0",
-  "private": true,
-  "devDependencies": {
-    "react-native-scripts": "1.1.0",
-    "jest-expo": "~19.0.0",
-    "react-test-renderer": "16.0.0-alpha.12"
-  },
-  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
-  "scripts": {
-    "start": "react-native-scripts start",
-    "eject": "react-native-scripts eject",
-    "android": "react-native-scripts android",
-    "ios": "react-native-scripts ios",
-    "test": "node node_modules/jest/bin/jest.js --watch"
-  },
-  "jest": {
-    "preset": "jest-expo"
-  },
   "dependencies": {
     "expo": "^19.0.0",
     "react": "16.0.0-alpha.12",
     "react-native": "^0.46.1"
+  },
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "jest-expo": "~19.0.0",
+    "lint-staged": "^4.0.3",
+    "prettier": "^1.5.3",
+    "react-native-scripts": "1.1.0",
+    "react-test-renderer": "16.0.0-alpha.12"
+  },
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write --single-quote true --trailing-comma all --print-width 80",
+      "git add"
+    ]
+  },
+  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
+  "private": true,
+  "scripts": {
+    "android": "react-native-scripts android",
+    "eject": "react-native-scripts eject",
+    "ios": "react-native-scripts ios",
+    "precommit": "lint-staged",
+    "prettier": "./node_modules/.bin/prettier --write --single-quote true --trailing-comma all --print-width 100 --write 'src/**/*.js'",
+    "start": "react-native-scripts start",
+    "test": "node node_modules/jest/bin/jest.js --watch",
+    "upg": "yarn upgrade-interactive"
   }
 }
