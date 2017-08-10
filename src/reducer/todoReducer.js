@@ -1,6 +1,14 @@
-const initialState = [];
+const initialState = {
+  todos: [
+    { todoValue: 'TESTE' },
+    { todoValue: 'TESTE' },
+    { todoValue: 'TESTE' },
+  ],
+};
 
 const todo = (state = initialState, action) => {
+  console.log(action);
+
   switch (action.type) {
     case 'TODO_ADD':
       return [action.todo, ...state];
