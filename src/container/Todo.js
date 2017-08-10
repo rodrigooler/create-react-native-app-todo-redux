@@ -8,6 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { todoAdd } from '../action/todoActions';
 
@@ -23,40 +24,45 @@ class Todo extends Component {
 
   render() {
     const { todoValue } = this.state;
-    console.log(this.props);
+    console.log(todos);
+    const { todos } = this.props;
 
     return (
-      <View style={styles.container}>
-        <View style={styles.title}>
-          <Text style={styles.titleText}>CRNA + REDUX TODO</Text>
+      <KeyboardAwareScrollView>
+        <View style={styles.container}>
+          <View style={styles.title}>
+            <Text style={styles.titleText}>CRNA + REDUX TODO</Text>
+          </View>
+          <View>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={todoValue => this.setState({ todoValue })}
+              value={todoValue}
+              placeholder="Add TODO"
+            />
+            <TouchableOpacity style={styles.button} onPress={this.todoAdd}>
+              <Text style={styles.buttonText}>ADD</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.flatView}>
+            <FlatList
+              data={todos}
+              renderItem={({ item }, key) =>
+                <TouchableOpacity key={key} style={styles.flatList}>
+                  <Text>
+                    {item.todoValue}
+                  </Text>
+                </TouchableOpacity>}
+            />
+          </View>
         </View>
-        <View>
-          <TextInput
-            style={styles.textInput}
-            onChangeText={todoValue => this.setState({ todoValue })}
-            value={todoValue}
-          />
-          <TouchableOpacity style={styles.button} onPress={this.todoAdd}>
-            <Text>ADD</Text>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <FlatList
-            data={[{ key: 'a' }, { key: 'b' }]}
-            renderItem={({ item }) =>
-              <Text>
-                {item.key}
-              </Text>}
-          />
-        </View>
-      </View>
+      </KeyboardAwareScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#4EB7D9',
     alignItems: 'center',
   },
@@ -82,14 +88,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 40,
     width: 320,
+    backgroundColor: '#333',
+  },
+  buttonText: {
+    color: '#FFF',
+  },
+  flatView: {
+    marginTop: 10,
+  },
+  flatList: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40,
+    width: 320,
     backgroundColor: '#FFF',
+    borderColor: '#333',
+    borderWidth: 1,
   },
 });
 
 const mapStateToProps = state => ({
-  todos: state.todos,
+  todos: state,
 });
-
 const mapDispatchToProps = dispatch => ({
   actions: {
     todoAdd: todo => dispatch(todoAdd(todo)),
